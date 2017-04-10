@@ -32,9 +32,14 @@ Here's a walkthrough of implemented user stories:
 
 ![](./Yelp.gif)
 
+
 ## Notes
 
 Had hard time implementing the filters. Need to refactor the code to clean up the implementation.
+
+To Do:
+- Implement optional features
+
 
 ## License
 
