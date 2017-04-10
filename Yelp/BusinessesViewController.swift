@@ -17,6 +17,11 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
     
     @IBOutlet weak var tableView: UITableView!
     
+//    var categories = [String]()
+//    var sortBy: YelpSortMode = YelpSortMode.bestMatched
+//    var deals: Bool = false
+//    var distance: Float = 10.00
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -91,28 +96,28 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         //        })
     }
     
-    fileprivate func doSearch(sort: YelpSortMode, categories: [String], deals: Bool) {
-        
-        MBProgressHUD.showAdded(to: self.view, animated: true)
-        
-        // Example of Yelp search with more search options specified
-        Business.searchWithTerm(term: "Restaurants", sort: sort, categories: categories, deals: deals, completion: { (businesses, error) -> Void in
-            
-            self.businesses = businesses
-            
-            self.tableView.reloadData()
-            
-            if let businesses = businesses {
-                for business in businesses {
-                    print(business.name!)
-                    print(business.address!)
-                }
-            }
-            
-            MBProgressHUD.hide(for: self.view, animated: true)
-        }
-        )
-    }
+//    fileprivate func doSearch(sort: YelpSortMode, categories: [String], deals: Bool) {
+//        
+//        MBProgressHUD.showAdded(to: self.view, animated: true)
+//        
+//        // Example of Yelp search with more search options specified
+//        Business.searchWithTerm(term: "Restaurants", sort: sort, categories: categories, deals: deals, completion: { (businesses, error) -> Void in
+//            
+//            self.businesses = businesses
+//            
+//            self.tableView.reloadData()
+//            
+//            if let businesses = businesses {
+//                for business in businesses {
+//                    print(business.name!)
+//                    print(business.address!)
+//                }
+//            }
+//            
+//            MBProgressHUD.hide(for: self.view, animated: true)
+//        }
+//        )
+//    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -145,6 +150,11 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         let navigationController = segue.destination as! UINavigationController
         let filtersViewController = navigationController.topViewController as! FiltersViewController
         
+//        filtersViewController.distanceFilter = "\(distance)"
+//        filtersViewController.hasDealFilter = deals
+//        filtersViewController.categoriesFilter = categories
+//        filtersViewController.sortByFilter = "\(sortBy)"
+        
         filtersViewController.delegate = self
     }
     
@@ -155,14 +165,16 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         print(filters)
         
         if  (filters["categories"] != nil  || filters["sortBy"] != nil
-            || filters["deals"] != nil) {
+            || filters["deals"] != nil || filters["distance"] != nil) {
 //        if  (filters.selectedCategories != nil  || filters.sortByFilter != nil
 //            || filters.hasDealFilter != nil) {
         
             let categories = filters["categories"] as? [String]
             let sortBy = filters["sortBy"] as? YelpSortMode
             let deals = filters["deals"] as? Bool
-        
+            let distance = filters["distance"] as? String
+            let distanceInMeteres = (Float(distance!) ?? 0)! * 1609.34
+            
 //            let categories = filters.selectedCategories as? [String]
 //            let sortBy = filters.sortByFilter as? YelpSortMode
 //            let deals = filters.hasDealFilter as? Bool
@@ -172,7 +184,7 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
             MBProgressHUD.showAdded(to: self.view, animated: true)
             
             // Example of Yelp search with more search options specified
-            Business.searchWithTerm(term: "Restaurants", sort: sortBy, categories: categories, deals: deals, completion: { (businesses, error) -> Void in
+            Business.searchWithTerm(term: searchBar.text!, sort: sortBy, categories: categories, deals: deals, distance: distanceInMeteres, completion: { (businesses, error) -> Void in
                 
                 self.businesses = businesses
                 

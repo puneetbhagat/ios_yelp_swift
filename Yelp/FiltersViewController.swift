@@ -17,9 +17,6 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
 
     @IBOutlet weak var tableView: UITableView!
     
-    let CellIdentifier = "TableViewCell"
-    let HeaderViewIdentifier = "TableViewHeaderView"
-    
     weak var delegate: FiltersViewControllerDelegate?
     
     var categories:  [[String:String]]!
@@ -46,8 +43,8 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
         // Do any additional setup after loading the view.
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: CellIdentifier)
-        tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: HeaderViewIdentifier)
+//        tableView.register(UITableViewCell.self, forCellReuseIdentifier: CellIdentifier)
+//        tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: HeaderViewIdentifier)
     }
     
     func yelpHasDeal() -> String {
@@ -55,7 +52,7 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     func yelpDistances() -> [[String:String]]{
-        return [["name": "Auto", "value": "100.00"],
+        return [["name": "Auto", "value": "10.00"],
                     ["name": "0.3 Mile", "value": "0.3"],
                     ["name": "1 Miles", "value": "1.00"],
                     ["name": "5 Miles", "value": "5.00"],
@@ -350,16 +347,16 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
         if section == 0 {
             hasDealFilter = value
             
-        } else if section == 1{
+        } else if section == 1 {
             if value ==  true {
-                distanceFilter = filterTableViewCell.filterLabel.text!
+                distanceFilter = distances[indexPath.row]["value"]
                 distanceStates.keys.forEach({ (distanceStates[$0] = false)})
                 print(distanceStates)
             } else{
                 distanceFilter = nil
             }
             distanceStates[indexPath.row] = value
-        } else if section == 2{
+        } else if section == 2 {
             if value ==  true {
                 sortByFilter = filterTableViewCell.filterLabel.text!
                 sortByStates.keys.forEach({ (sortByStates[$0] = false)})
